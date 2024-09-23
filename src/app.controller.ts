@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,8 +10,19 @@ export class AppController {
     return this.appService.validateToken();
   }
 
-  @Get('validate-card')
-  validateCard() {
-    return this.appService.validateCard(1000, 4000);
+  @Post('validate-card')
+  validateCard(@Body() body: { userId: number; amount: number }) {
+    const { userId, amount } = body;
+    return this.appService.validateCard(userId, amount);
+  }
+
+  @Get('partner-events')
+  getPartnerEvents() {
+    return this.appService.getPartnerEvents();
+  }
+
+  @Get('event-details/:eventId')
+  getEventDetails(@Param('eventId') eventId: string) {
+    return this.appService.getEventDetails(eventId);
   }
 }
